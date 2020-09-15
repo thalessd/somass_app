@@ -35,7 +35,7 @@ class DefaultTextFormField extends StatelessWidget {
       onTap: onTap,
       decoration: InputDecoration(
           hintText: this.hintText,
-          border: OutlineInputBorder(),
+          filled: true,
           prefixIcon: this.icon,
           labelText: this.labelText),
       validator: this.validator,

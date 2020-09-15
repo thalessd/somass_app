@@ -29,10 +29,15 @@ class App extends StatelessWidget {
           body: child,
         ),
         theme: ThemeData(
-          primarySwatch: Colors.yellow,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        initialRoute: '/login', // Rota Inicial Real é "/"
+            primaryColor: Color(0xFFFFC65C),
+            primaryColorDark: Color(0xFFE09200),
+            accentColor: Color(0xFF5D7E98),
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            buttonTheme: ButtonThemeData(
+              padding: EdgeInsets.only(top: 14, bottom: 14, left: 22, right: 22 ),
+            )),
+        initialRoute: '/login',
+        // Rota Inicial Real é "/"
         routes: {
           "/": (context) => SplashScreen(),
           "/login": (context) => LoginScreen(),
