@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class DefaultTextFormField extends StatelessWidget {
   DefaultTextFormField(
@@ -13,7 +14,8 @@ class DefaultTextFormField extends StatelessWidget {
       this.onTap,
       this.onSaved,
       this.onChanged,
-      this.keyboardType});
+      this.keyboardType,
+      this.inputFormatters});
 
   final String labelText;
   final String Function(String) validator;
@@ -27,6 +29,7 @@ class DefaultTextFormField extends StatelessWidget {
   final Function(String) onSaved;
   final Function(String) onChanged;
   final TextInputType keyboardType;
+  final List<TextInputFormatter> inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +48,7 @@ class DefaultTextFormField extends StatelessWidget {
       onSaved: onSaved,
       keyboardType: keyboardType,
       onChanged: onChanged,
+      inputFormatters: inputFormatters,
     );
   }
 }

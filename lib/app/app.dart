@@ -10,6 +10,25 @@ import 'package:somass_app/app/splash/splash_screen.dart';
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    final int primaryColor = 0xFFFFC65C;
+    final int primaryColorLight = 0xFFFFE2AD;
+    final int primaryColorDark = 0xFFE09200;
+    final int accentColor = 0xFF6CFFB2;
+
+    final MaterialColor materialColor = MaterialColor(primaryColor, <int, Color>{
+      50:  Color(0xFFFFF1D6),
+      100: Color(primaryColorLight),
+      200: Color(0xFFFFD485),
+      300: Color(primaryColor),
+      400: Color(0xFFFFB833),
+      500: Color(0xFFFFA90A),
+      600: Color(primaryColorDark),
+      700: Color(0xFFB87700),
+      800: Color(0xFFB87700),
+      900: Color(0xFF664200),
+    });
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -29,9 +48,11 @@ class App extends StatelessWidget {
           body: child,
         ),
         theme: ThemeData(
-            primaryColor: Color(0xFFFFC65C),
-            primaryColorDark: Color(0xFFE09200),
-            accentColor: Color(0xFF5D7E98),
+            primaryColor: Color(primaryColor),
+            primaryColorLight: Color(primaryColorLight),
+            primaryColorDark: Color(primaryColorDark),
+            accentColor: Color(accentColor),
+            primarySwatch: materialColor,
             visualDensity: VisualDensity.adaptivePlatformDensity,
             buttonTheme: ButtonThemeData(
               padding: EdgeInsets.only(top: 14, bottom: 14, left: 22, right: 22 ),

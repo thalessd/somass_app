@@ -19,6 +19,8 @@ dependencies:
   dio: ^3.0.10
   device_info: ^0.4.2+7
   material_design_icons_flutter: ^4.0.5555
+  mask_text_input_formatter: ^1.1.0
+  cpf_cnpj_validator: ^1.0.5
 
 dev_dependencies:
   flutter_test:
