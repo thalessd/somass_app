@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:somass_app/app/home/home_screen.dart';
+import 'package:somass_app/app/home/name_screen.dart';
 import 'package:somass_app/app/login/login_screen.dart';
 import 'package:somass_app/app/shared/providers/app_provider.dart';
 import 'package:somass_app/app/splash/splash_screen.dart';
@@ -57,12 +58,13 @@ class App extends StatelessWidget {
             buttonTheme: ButtonThemeData(
               padding: EdgeInsets.only(top: 14, bottom: 14, left: 22, right: 22 ),
             )),
-        initialRoute: '/login',
+        initialRoute: '/',
         // Rota Inicial Real é "/"
         routes: {
           "/": (context) => SplashScreen(),
           "/login": (context) => LoginScreen(),
           "/home": (context) => HomeScreen(),
+          "/name": (context) => NameScreen(),
         },
       ),
     );
