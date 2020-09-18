@@ -28,48 +28,47 @@ class NamePage extends StatelessWidget {
       body: LazyLoadBlurred(
         show: load,
         child: Center(
-          child: Container(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(Style.APP_MARGIN),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  FractionallySizedBox(
-                    widthFactor: .7,
-                    child: SvgPicture.asset(
-                      "assets/images/undraw-text-field-htlv.svg",
-                      height: 200,
+          child: SingleChildScrollView(
+            reverse: true,
+            padding: EdgeInsets.all(Style.APP_MARGIN),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FractionallySizedBox(
+                  widthFactor: .7,
+                  child: SvgPicture.asset(
+                    "assets/images/undraw-text-field-htlv.svg",
+                    height: 200,
+                  ),
+                ),
+                SizedBox(
+                  height: 80,
+                ),
+                Card(
+                  elevation: 4.0,
+                  child: Padding(
+                    padding: EdgeInsets.all(Style.CARD_MARGIN),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Coloque seu nome no campo a baixo para que possamos lhe identificar.',
+                          style: TextStyle(
+                              fontSize: Theme.of(context).textTheme.headline6.fontSize,
+                              fontFamily: "Cairo",
+                              height: 1.2
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        NameForm(onSave: onSave, load: load,)
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: 80,
-                  ),
-                  Card(
-                    elevation: 4.0,
-                    child: Padding(
-                      padding: EdgeInsets.all(Style.CARD_MARGIN),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Coloque seu nome no campo a baixo para que possamos lhe identificar.',
-                            style: TextStyle(
-                                fontSize: Theme.of(context).textTheme.headline6.fontSize,
-                                fontFamily: "Cairo",
-                                height: 1.2
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          NameForm(onSave: onSave, load: load,)
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           )
         ),
