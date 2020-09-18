@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget {
               FractionallySizedBox(
                 widthFactor: 1,
                 child: Container(
-                    height: 400,
+                    height: MediaQuery.of(context).size.height / 1.8,
                     decoration: BoxDecoration(
                       borderRadius: new BorderRadius.only(
                         bottomLeft: const Radius.circular(35.0),
