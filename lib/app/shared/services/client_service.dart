@@ -39,6 +39,10 @@ class ClientService {
         await localData.setFullName(clientDataDto.fullName);
       }
 
+      if(clientDataDto.escorts != null) {
+        await localData.setEscorts(clientDataDto.escorts);
+      }
+
     } catch (e) {
       throw e;
     }

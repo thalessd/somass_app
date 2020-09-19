@@ -28,13 +28,14 @@ class ConfirmDialog extends StatelessWidget {
         FlatButton(
           child: Text(cancelButtonText),
           onPressed: () {
-            onCancel();
             Navigator.of(context).pop();
+            onCancel();
           },
         ),
-        FlatButton(
+        RaisedButton(
           child: Text(confirmButtonText),
           onPressed: () {
+            Navigator.of(context).pop();
             onConfirm();
           },
         )

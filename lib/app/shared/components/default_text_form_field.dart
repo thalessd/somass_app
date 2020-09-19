@@ -15,7 +15,9 @@ class DefaultTextFormField extends StatelessWidget {
       this.onSaved,
       this.onChanged,
       this.keyboardType,
-      this.inputFormatters});
+      this.inputFormatters,
+        this.initialValue,
+      });
 
   final String labelText;
   final String Function(String) validator;
@@ -30,12 +32,14 @@ class DefaultTextFormField extends StatelessWidget {
   final Function(String) onChanged;
   final TextInputType keyboardType;
   final List<TextInputFormatter> inputFormatters;
+  final String initialValue;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       readOnly: readOnly,
       onTap: onTap,
+      initialValue: initialValue,
       decoration: InputDecoration(
           hintText: this.hintText,
           filled: true,

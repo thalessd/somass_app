@@ -5,7 +5,8 @@ class InputValidator {
   static final String _textRequired = "Este campo é obrigatório!";
   static final String _textEmail = "Este campo precisa ser um email";
   static final String _textCPF = "Este campo precisa ter um CPF válido";
-  static final String _textMin = "Este campo precisa ter no mínimo %s carácteres";
+  static final String _textMin =
+      "Este campo precisa ter no mínimo %s carácteres";
 
   static final RegExp _regExpEmail = new RegExp(
     r"^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$",
@@ -20,14 +21,14 @@ class InputValidator {
     return null;
   }
 
-  static String Function(String) isRequiredMin(int minValue) {
+  static String Function(String) isRequiredMin(int minValue, {String message}) {
     return (String value) {
       if (value.isEmpty) {
         return _textRequired;
       }
 
       if (value.length < minValue) {
-        return sprintf(_textMin, [minValue]);
+        return sprintf(message == null ? _textMin : message, [minValue]);
       }
 
       return null;
