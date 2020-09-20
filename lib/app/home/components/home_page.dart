@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:somass_app/app/home/components/event_card.dart';
+import 'package:somass_app/app/home/components/event_dialog.dart';
 import 'package:somass_app/app/home/components/name_edit_dialog.dart';
 import 'package:somass_app/app/home/components/section_title.dart';
 import 'package:somass_app/app/shared/components/confirm_dialog.dart';
+import 'package:somass_app/app/shared/components/info_dialog.dart';
 import 'package:somass_app/app/shared/components/lazy_load_blurred.dart';
 import 'package:somass_app/app/shared/constants/constant.dart';
 import 'package:somass_app/app/shared/constants/style.dart';
-import 'package:somass_app/app/shared/helpers/helper.dart';
 import 'package:somass_app/app/shared/models/day_of_week.dart';
 import 'package:somass_app/app/shared/models/public_event.dart';
 import "package:collection/collection.dart";
+import 'package:snack/snack.dart';
 
 class HomePage extends StatefulWidget {
   final Function exitFromApp;
@@ -22,6 +24,9 @@ class HomePage extends StatefulWidget {
   final Function(String) onAddEscort;
   final Function(int) onDeleteEscort;
   final Function(String, int) onUpdateEscort;
+  final Function() onRefresh;
+  final Function(PublicEvent) onSubscribe;
+  final Function(PublicEvent) onUnsubscribe;
 
   HomePage(
       {this.exitFromApp,
@@ -32,6 +37,9 @@ class HomePage extends StatefulWidget {
       this.onDeleteEscort,
       this.onAddEscort,
       this.onUpdateEscort,
+      this.onRefresh,
+      this.onSubscribe,
+      this.onUnsubscribe,
       this.load = false});
 
   @override
@@ -96,8 +104,42 @@ class _HomePageState extends State<HomePage> {
     showDialog(context: context, builder: (_) => nameEditDialog);
   }
 
+  void onEventTap(PublicEvent event) {
+    final peopleQty = widget.escorts.length + 1;
+
+    if ((peopleQty + event.occupiedVacancies) > event.totalVacancies) {
+      return SnackBar(
+        content: Text(
+            "Não a vagas suficientes para você e seus acompanhantes, tente remover algum acompanhante para proseguir com o agendamento."),
+      ).show(context);
+    }
+
+    final eventDialog = EventDialog(
+      event: event,
+      onSubscribe: this.widget.onSubscribe,
+      onUnsubscribe: this.widget.onUnsubscribe,
+    );
+
+    showDialog(context: context, builder: (_) => eventDialog);
+  }
+
+  void onInfoEditClientData() {
+    final infoDialog = InfoDialog(
+      title: "Como Editar Minhas Informações?",
+      contentText:
+          "Você tem uma missa agendada, caso você queira editar seu nome, ou adicionar um novo acompanhante, desagende os atuais, e agende novamente após alterar tudo que necessitar.",
+      confirmButtonText: "Entendi",
+      onConfirm: () {},
+    );
+
+    showDialog(context: context, builder: (_) => infoDialog);
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    final hasSubscribed = !widget.events.every((element) => !element.hasParticipation);
+
     final groupedEvents =
         groupBy(widget.events, (PublicEvent obj) => obj.location.trim());
 
@@ -110,9 +152,12 @@ class _HomePageState extends State<HomePage> {
       final sundayDays = <PublicEvent>[];
       final otherDays = <PublicEvent>[];
 
-      for(PublicEvent publicEvent in value) {
-        if(publicEvent.dayOfWeek == DayOfWeek.Sunday) { sundayDays.add(publicEvent); }
-        else { otherDays.add(publicEvent); }
+      for (PublicEvent publicEvent in value) {
+        if (publicEvent.dayOfWeek == DayOfWeek.Sunday) {
+          sundayDays.add(publicEvent);
+        } else {
+          otherDays.add(publicEvent);
+        }
       }
 
       final formatedList = [...otherDays, ...sundayDays];
@@ -128,6 +173,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 return EventCard(
                   event: formatedList[index],
+                  onOpenEvent: onEventTap,
                 );
               },
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -155,6 +201,11 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             IconButton(
+              icon: Icon(Icons.refresh),
+              tooltip: "Atualizar",
+              onPressed: widget.load ? null : widget.onRefresh,
+            ),
+            IconButton(
               icon: Icon(Icons.exit_to_app),
               tooltip: "Sair do Aplicativo",
               onPressed: widget.load ? null : onExitClick,
@@ -164,106 +215,154 @@ class _HomePageState extends State<HomePage> {
         body: LazyLoadBlurred(
           show: widget.load,
           child: Container(
-            child: ListView(
-              padding: EdgeInsets.all(Style.APP_MARGIN),
+            child: Column(
               children: [
-                SectionTitle(
-                  title: "Você",
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Card(
-                  elevation: 3,
-                  margin: EdgeInsets.all(0),
-                  color: Colors.white,
-                  child: ListTile(
-                      title: Text(widget.fullName),
+                if (hasSubscribed)
+                  Container(
+                    color: Colors.blueAccent,
+                    child: ListTile(
+                      onTap: onInfoEditClientData,
                       leading: Icon(
-                        Icons.person,
-                        color: Theme.of(context).primaryColor,
+                        Icons.info,
+                        color: Colors.white,
                       ),
-                      trailing: IconButton(
-                        icon: Icon(Icons.edit),
-                        splashRadius: 20,
-                        color: Colors.blueAccent,
-                        onPressed: onFullNameEdit,
-                      )),
-                ),
-                SizedBox(
-                  height: 18,
-                ),
-                SectionTitle(
-                  title: "Acompanhantes",
-                  badgeText: "${widget.escorts.length}/${Constant.ESCORTS_MAX}",
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Card(
-                  elevation: 3,
-                  margin: EdgeInsets.all(0),
-                  color: Colors.white,
-                  child: Column(
+                      // dense: true,
+                      title: Text(
+                          "Deseja editar suas informações ou alterar seus acompanhantes?",
+                          style: TextStyle(
+                              fontSize: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1
+                                  .fontSize,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white)),
+                    ),
+                  ),
+                Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.all(Style.APP_MARGIN),
                     children: [
+                      SectionTitle(
+                        title: "Você",
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Card(
+                        elevation: 3,
+                        margin: EdgeInsets.all(0),
+                        color: Colors.white,
+                        child: ListTile(
+                            title: Text(widget.fullName),
+                            leading: Icon(
+                              Icons.person,
+                              color: hasSubscribed
+                                  ? Colors.grey
+                                  : Theme.of(context).primaryColor,
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(Icons.edit),
+                              splashRadius: 20,
+                              color: hasSubscribed
+                                  ? Colors.grey
+                                  : Colors.blueAccent,
+                              onPressed:
+                                  hasSubscribed ? null : onFullNameEdit,
+                            )),
+                      ),
+                      SizedBox(
+                        height: 18,
+                      ),
+                      SectionTitle(
+                        title: "Acompanhantes",
+                        badgeText:
+                            "${widget.escorts.length}/${Constant.ESCORTS_MAX}",
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Card(
+                        elevation: 3,
+                        margin: EdgeInsets.all(0),
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: widget.escorts.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                    title: Text(widget.escorts[index]),
+                                    leading: Icon(
+                                      Icons.person,
+                                      color: hasSubscribed
+                                          ? Colors.grey
+                                          : Theme.of(context).primaryColor,
+                                    ),
+                                    trailing: Wrap(
+                                      spacing: -8,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: hasSubscribed
+                                                ? Colors.grey
+                                                : Colors.redAccent,
+                                          ),
+                                          splashRadius: 20,
+                                          onPressed: hasSubscribed
+                                              ? null
+                                              : () => onEscortDelete(index),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: hasSubscribed
+                                                ? Colors.grey
+                                                : Colors.blueAccent,
+                                          ),
+                                          splashRadius: 20,
+                                          onPressed: hasSubscribed
+                                              ? null
+                                              : () => onEscortUpdate(index),
+                                        )
+                                      ],
+                                    ));
+                              },
+                            ),
+                            if (this.widget.escorts.length > 0 &&
+                                this.widget.escorts.length <
+                                    Constant.ESCORTS_MAX)
+                              Divider(color: Colors.grey[400]),
+                            if (this.widget.escorts.length <
+                                Constant.ESCORTS_MAX)
+                              ListTile(
+                                  title: Text("Adicionar Outra Pessoa"),
+                                  onTap:
+                                      hasSubscribed ? null : onEscortAdd,
+                                  leading: Icon(
+                                    Icons.person_add,
+                                    color: hasSubscribed
+                                        ? Colors.grey
+                                        : Colors.green,
+                                  ))
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 18,
+                      ),
                       ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: widget.escorts.length,
+                        itemCount: eventTiles.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                              title: Text(widget.escorts[index]),
-                              leading: Icon(
-                                Icons.person,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              trailing: Wrap(
-                                spacing: -8,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: Colors.redAccent,
-                                    ),
-                                    splashRadius: 20,
-                                    onPressed: () => onEscortDelete(index),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Colors.blueAccent,
-                                    ),
-                                    splashRadius: 20,
-                                    onPressed: () => onEscortUpdate(index),
-                                  )
-                                ],
-                              ));
+                          return eventTiles[index];
                         },
                       ),
-                      if (this.widget.escorts.length > 0 &&
-                          this.widget.escorts.length < Constant.ESCORTS_MAX)
-                        Divider(color: Colors.grey[400]),
-                      if (this.widget.escorts.length < Constant.ESCORTS_MAX)
-                        ListTile(
-                            title: Text("Adicionar Outra Pessoa"),
-                            onTap: onEscortAdd,
-                            leading: Icon(
-                              Icons.person_add,
-                              color: Colors.green,
-                            ))
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 18,
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: eventTiles.length,
-                  itemBuilder: (context, index) {
-                    return eventTiles[index];
-                  },
                 ),
               ],
             ),

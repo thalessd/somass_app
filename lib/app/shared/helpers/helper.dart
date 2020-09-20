@@ -66,14 +66,13 @@ class Helper {
     }
   }
 
-  static String dayOfWeekToBrlText(DayOfWeek dayOfWeek) {
+  static String dayOfWeekToBrlShort(DayOfWeek dayOfWeek) {
     final days = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex"];
     return days[dayOfWeek.index];
   }
 
-  static List<Object> listRotate(List<Object> list, int v) {
-    if (list == null || list.isEmpty) return list;
-    var i = v % list.length;
-    return list.sublist(i)..addAll(list.sublist(0, i));
+  static String dayOfWeekToBrlLong(DayOfWeek dayOfWeek) {
+    final days = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira"];
+    return days[dayOfWeek.index];
   }
 }

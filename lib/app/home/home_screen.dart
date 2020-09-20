@@ -174,6 +174,24 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  onSubscribe(PublicEvent event) {
+    final eventIndex = _events.indexOf(event);
+
+    setState(() {
+      _events[eventIndex].occupiedVacancies += _escorts.length + 1;
+      _events[eventIndex].hasParticipation = true;
+    });
+  }
+
+  onUnsubscribe(PublicEvent event) {
+    final eventIndex = _events.indexOf(event);
+
+    setState(() {
+      _events[eventIndex].occupiedVacancies -= _escorts.length + 1;
+      _events[eventIndex].hasParticipation = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -207,6 +225,9 @@ class _HomeScreenState extends State<HomeScreen> {
       onDeleteEscort: onDeleteEscort,
       onAddEscort: onAddEscort,
       onUpdateEscort: onUpdateEscort,
+      onRefresh: populateEvents,
+      onSubscribe: onSubscribe,
+      onUnsubscribe: onUnsubscribe,
     );
   }
 }
