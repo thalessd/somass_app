@@ -107,12 +107,12 @@ class _HomePageState extends State<HomePage> {
   void onEventTap(PublicEvent event) {
     final peopleQty = widget.escorts.length + 1;
 
-    if ((peopleQty + event.occupiedVacancies) > event.totalVacancies) {
-      return SnackBar(
-        content: Text(
-            "Não a vagas suficientes para você e seus acompanhantes, tente remover algum acompanhante para proseguir com o agendamento."),
-      ).show(context);
-    }
+//    if ((peopleQty + event.occupiedVacancies) > event.totalVacancies) {
+//      return SnackBar(
+//        content: Text(
+//            "Não a vagas suficientes para você e seus acompanhantes, tente remover algum acompanhante para proseguir com o agendamento."),
+//      ).show(context);
+//    }
 
     final eventDialog = EventDialog(
       event: event,

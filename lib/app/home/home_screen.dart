@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:somass_app/app/home/components/home_page.dart';
@@ -174,6 +176,44 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  _manageEventActionErrors(dynamic e) {
+    final dioError = e as DioError;
+
+    if (dioError?.response?.statusCode == 403) {
+      final httpError = dioError.response.data;
+
+      if (httpError["error"] == "No Vacancy") {
+        return SnackBar(
+          content: Text("Não há vagas disponíveis!"),
+          action: SnackBarAction(
+            label: "Atualizar",
+            onPressed: () {
+              this.populateEvents();
+            },
+          ),
+        ).show(context);
+      } else if (httpError["error"] == "Date Has Passed") {
+        return SnackBar(
+          content: Text("Desculpe, este evento já passou!"),
+          action: SnackBarAction(
+            label: "Atualizar",
+            onPressed: () {
+              this.populateEvents();
+            },
+          ),
+        ).show(context);
+      }
+
+      return SnackBar(
+        content: Text("Erro, Não Catalogado"),
+      ).show(context);
+    }
+
+    SnackBar(
+      content: Text("Erro, verifique sua internet"),
+    ).show(context);
+  }
+
   onSubscribe(PublicEvent event) async {
     try {
       toggleLoad(true);
@@ -187,9 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _events[eventIndex].hasParticipation = true;
       });
     } catch (e) {
-      final dioError = e as DioError;
-
-      print(dioError);
+      _manageEventActionErrors(e);
     } finally {
       toggleLoad(false);
     }
@@ -208,8 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _events[eventIndex].hasParticipation = false;
       });
     } catch (e) {
-      final dioError = e as DioError;
-
+      _manageEventActionErrors(e);
     } finally {
       toggleLoad(false);
     }
