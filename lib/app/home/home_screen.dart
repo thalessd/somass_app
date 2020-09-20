@@ -174,22 +174,45 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  onSubscribe(PublicEvent event) {
-    final eventIndex = _events.indexOf(event);
+  onSubscribe(PublicEvent event) async {
+    try {
+      toggleLoad(true);
 
-    setState(() {
-      _events[eventIndex].occupiedVacancies += _escorts.length + 1;
-      _events[eventIndex].hasParticipation = true;
-    });
+      await ClientService.subscribe(event);
+
+      final eventIndex = _events.indexOf(event);
+
+      setState(() {
+        _events[eventIndex].occupiedVacancies += _escorts.length + 1;
+        _events[eventIndex].hasParticipation = true;
+      });
+    } catch (e) {
+      final dioError = e as DioError;
+
+      print(dioError);
+    } finally {
+      toggleLoad(false);
+    }
   }
 
-  onUnsubscribe(PublicEvent event) {
-    final eventIndex = _events.indexOf(event);
+  onUnsubscribe(PublicEvent event) async {
+    try {
+      toggleLoad(true);
 
-    setState(() {
-      _events[eventIndex].occupiedVacancies -= _escorts.length + 1;
-      _events[eventIndex].hasParticipation = false;
-    });
+      await ClientService.unsubscribe(event);
+
+      final eventIndex = _events.indexOf(event);
+
+      setState(() {
+        _events[eventIndex].occupiedVacancies -= _escorts.length + 1;
+        _events[eventIndex].hasParticipation = false;
+      });
+    } catch (e) {
+      final dioError = e as DioError;
+
+    } finally {
+      toggleLoad(false);
+    }
   }
 
   @override

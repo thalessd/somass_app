@@ -137,8 +137,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-    final hasSubscribed = !widget.events.every((element) => !element.hasParticipation);
+    final hasSubscribed =
+        !widget.events.every((element) => element.hasPassed ? true : !element.hasParticipation);
 
     final groupedEvents =
         groupBy(widget.events, (PublicEvent obj) => obj.location.trim());
@@ -148,6 +148,10 @@ class _HomePageState extends State<HomePage> {
     groupedEvents.forEach((String key, List<PublicEvent> value) {
       value.sort((a, b) =>
           a.dayOfWeek.index.toString().compareTo(b.dayOfWeek.index.toString()));
+
+      value.sort((a,b) {
+        return a.date.compareTo(b.date);
+      });
 
       final sundayDays = <PublicEvent>[];
       final otherDays = <PublicEvent>[];
@@ -179,7 +183,7 @@ class _HomePageState extends State<HomePage> {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
-                crossAxisCount: 4,
+                crossAxisCount: 3,
               ),
               primary: false,
               shrinkWrap: true,
@@ -266,8 +270,7 @@ class _HomePageState extends State<HomePage> {
                               color: hasSubscribed
                                   ? Colors.grey
                                   : Colors.blueAccent,
-                              onPressed:
-                                  hasSubscribed ? null : onFullNameEdit,
+                              onPressed: hasSubscribed ? null : onFullNameEdit,
                             )),
                       ),
                       SizedBox(
@@ -339,8 +342,7 @@ class _HomePageState extends State<HomePage> {
                                 Constant.ESCORTS_MAX)
                               ListTile(
                                   title: Text("Adicionar Outra Pessoa"),
-                                  onTap:
-                                      hasSubscribed ? null : onEscortAdd,
+                                  onTap: hasSubscribed ? null : onEscortAdd,
                                   leading: Icon(
                                     Icons.person_add,
                                     color: hasSubscribed

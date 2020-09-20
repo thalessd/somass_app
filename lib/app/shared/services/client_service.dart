@@ -69,4 +69,32 @@ class ClientService {
       throw e;
     }
   }
+
+  static subscribe(PublicEvent event) async {
+    try {
+      final localData = LocalData();
+
+      final token = await localData.getToken();
+
+      await Dio().post("${Constant.SERVER_URL}/client/subscribe/$token",
+          data: { "eventId": event.id } );
+
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static unsubscribe(PublicEvent event) async {
+    try {
+      final localData = LocalData();
+
+      final token = await localData.getToken();
+
+      await Dio().post("${Constant.SERVER_URL}/client/unsubscribe/$token",
+          data: { "eventId": event.id } );
+
+    } catch (e) {
+      throw e;
+    }
+  }
 }
