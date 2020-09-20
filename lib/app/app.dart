@@ -7,6 +7,7 @@ import 'package:somass_app/app/home/name_screen.dart';
 import 'package:somass_app/app/login/login_screen.dart';
 import 'package:somass_app/app/shared/providers/app_provider.dart';
 import 'package:somass_app/app/splash/splash_screen.dart';
+import 'package:somass_app/app/successfully_scheduled/successfully_scheduled_screen.dart';
 
 class App extends StatelessWidget {
   @override
@@ -61,10 +62,11 @@ class App extends StatelessWidget {
         initialRoute: '/',
         // Rota Inicial Real é "/"
         routes: {
-          "/": (context) => SplashScreen(),
+           "/": (context) => SplashScreen(),
           "/login": (context) => LoginScreen(),
           "/home": (context) => HomeScreen(),
           "/name": (context) => NameScreen(),
+          "/successfully_scheduled": (context) => SuccessfullyScheduledScreen(),
         },
       ),
     );

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:somass_app/app/home/components/home_page.dart';
@@ -226,6 +224,9 @@ class _HomeScreenState extends State<HomeScreen> {
         _events[eventIndex].occupiedVacancies += _escorts.length + 1;
         _events[eventIndex].hasParticipation = true;
       });
+
+      Helper.toSuccessfullyScheduled(context);
+
     } catch (e) {
       _manageEventActionErrors(e);
     } finally {
@@ -245,6 +246,10 @@ class _HomeScreenState extends State<HomeScreen> {
         _events[eventIndex].occupiedVacancies -= _escorts.length + 1;
         _events[eventIndex].hasParticipation = false;
       });
+
+      return SnackBar(
+        content: Text("Missa Desagendada"),
+      ).show(context);
     } catch (e) {
       _manageEventActionErrors(e);
     } finally {
