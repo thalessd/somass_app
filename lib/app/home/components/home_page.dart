@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:somass_app/app/home/components/event_card.dart';
 import 'package:somass_app/app/home/components/name_edit_dialog.dart';
 import 'package:somass_app/app/home/components/section_title.dart';
 import 'package:somass_app/app/shared/components/confirm_dialog.dart';
 import 'package:somass_app/app/shared/components/lazy_load_blurred.dart';
 import 'package:somass_app/app/shared/constants/constant.dart';
 import 'package:somass_app/app/shared/constants/style.dart';
+import 'package:somass_app/app/shared/helpers/helper.dart';
+import 'package:somass_app/app/shared/models/day_of_week.dart';
+import 'package:somass_app/app/shared/models/public_event.dart';
+import "package:collection/collection.dart";
 
 class HomePage extends StatefulWidget {
   final Function exitFromApp;
   final bool load;
   final String fullName;
   final List<String> escorts;
+  final List<PublicEvent> events;
 
   final Function(String) onEditFullName;
   final Function(String) onAddEscort;
@@ -21,6 +27,7 @@ class HomePage extends StatefulWidget {
       {this.exitFromApp,
       this.fullName,
       this.escorts,
+      this.events,
       this.onEditFullName,
       this.onDeleteEscort,
       this.onAddEscort,
@@ -91,6 +98,52 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final groupedEvents =
+        groupBy(widget.events, (PublicEvent obj) => obj.location.trim());
+
+    List<Widget> eventTiles = [];
+
+    groupedEvents.forEach((String key, List<PublicEvent> value) {
+      value.sort((a, b) =>
+          a.dayOfWeek.index.toString().compareTo(b.dayOfWeek.index.toString()));
+
+      final sundayDays = <PublicEvent>[];
+      final otherDays = <PublicEvent>[];
+
+      for(PublicEvent publicEvent in value) {
+        if(publicEvent.dayOfWeek == DayOfWeek.Sunday) { sundayDays.add(publicEvent); }
+        else { otherDays.add(publicEvent); }
+      }
+
+      final formatedList = [...otherDays, ...sundayDays];
+
+      final tile = Column(
+        children: [
+          SectionTitle(
+            title: "Missa: $key",
+          ),
+          GridView.builder(
+              padding: EdgeInsets.only(top: 10, bottom: 18),
+              itemCount: formatedList.length,
+              itemBuilder: (context, index) {
+                return EventCard(
+                  event: formatedList[index],
+                );
+              },
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                crossAxisCount: 4,
+              ),
+              primary: false,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics()),
+        ],
+      );
+
+      eventTiles.add(tile);
+    });
+
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -190,16 +243,28 @@ class _HomePageState extends State<HomePage> {
                       if (this.widget.escorts.length > 0 &&
                           this.widget.escorts.length < Constant.ESCORTS_MAX)
                         Divider(color: Colors.grey[400]),
-                      if(this.widget.escorts.length < Constant.ESCORTS_MAX) ListTile(
-                          title: Text("Adicionar Outra Pessoa"),
-                          onTap: onEscortAdd,
-                          leading: Icon(
-                            Icons.person_add,
-                            color: Colors.green,
-                          ))
+                      if (this.widget.escorts.length < Constant.ESCORTS_MAX)
+                        ListTile(
+                            title: Text("Adicionar Outra Pessoa"),
+                            onTap: onEscortAdd,
+                            leading: Icon(
+                              Icons.person_add,
+                              color: Colors.green,
+                            ))
                     ],
                   ),
-                )
+                ),
+                SizedBox(
+                  height: 18,
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: eventTiles.length,
+                  itemBuilder: (context, index) {
+                    return eventTiles[index];
+                  },
+                ),
               ],
             ),
           ),

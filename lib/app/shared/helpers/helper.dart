@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:somass_app/app/shared/models/day_of_week.dart';
 import 'package:somass_app/app/shared/models/enter_response.dart';
 import 'package:somass_app/app/shared/services/local_data.dart';
 
@@ -52,7 +53,8 @@ class Helper {
     }
   }
 
-  static void loginClientDirect(BuildContext context, EnterResponse enterResponse) async {
+  static void loginClientDirect(
+      BuildContext context, EnterResponse enterResponse) async {
     try {
       if (enterResponse.fullName == "") {
         return toNameNoBack(context);
@@ -62,5 +64,16 @@ class Helper {
     } catch (e) {
       toLoginNoBack(context);
     }
+  }
+
+  static String dayOfWeekToBrlText(DayOfWeek dayOfWeek) {
+    final days = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex"];
+    return days[dayOfWeek.index];
+  }
+
+  static List<Object> listRotate(List<Object> list, int v) {
+    if (list == null || list.isEmpty) return list;
+    var i = v % list.length;
+    return list.sublist(i)..addAll(list.sublist(0, i));
   }
 }

@@ -22,6 +22,7 @@ dependencies:
   mask_text_input_formatter: ^1.1.0
   cpf_cnpj_validator: ^1.0.5
   sprintf: ^4.1.0
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:somass_app/app/home/components/home_page.dart';
 import 'package:somass_app/app/shared/dto/client_data_dto.dart';
 import 'package:somass_app/app/shared/helpers/helper.dart';
+import 'package:somass_app/app/shared/models/public_event.dart';
 import 'package:somass_app/app/shared/services/client_service.dart';
 import 'package:somass_app/app/shared/services/local_data.dart';
 import 'package:snack/snack.dart';
@@ -18,25 +19,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String _fullName = "";
   List<String> _escorts = [];
 
+  List<PublicEvent> _events = [];
+
   bool _load = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    final localData = LocalData();
-
-    localData.getFullName().then((String fullName) => {
-          setState(() {
-            _fullName = fullName;
-          })
-        });
-    localData.getEscorts().then((List<String> escorts) => {
-          setState(() {
-            _escorts = escorts;
-          })
-        });
-  }
 
   void toggleLoad(load) {
     setState(() {
@@ -164,12 +149,59 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  populateEvents() async {
+    try {
+      toggleLoad(true);
+
+      final events = await ClientService.events();
+
+      setState(() {
+        _events = events;
+      });
+    } catch (e) {
+      SnackBar(
+        content:
+            Text("Não foi possível listar as missas, verifique sua internet"),
+        action: SnackBarAction(
+          label: "Tentar Novamente",
+          onPressed: () {
+            this.populateEvents();
+          },
+        ),
+      ).show(context);
+    } finally {
+      toggleLoad(false);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    final localData = LocalData();
+
+    localData.getFullName().then((String fullName) => {
+          setState(() {
+            _fullName = fullName;
+          })
+        });
+
+    localData.getEscorts().then((List<String> escorts) => {
+          setState(() {
+            _escorts = escorts;
+          })
+        });
+
+    populateEvents();
+  }
+
   @override
   Widget build(BuildContext context) {
     return HomePage(
       load: _load,
       fullName: _fullName,
       escorts: _escorts,
+      events: _events,
       exitFromApp: exitFromApp,
       onEditFullName: onEditFullName,
       onDeleteEscort: onDeleteEscort,

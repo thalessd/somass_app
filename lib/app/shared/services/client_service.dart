@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:somass_app/app/shared/constants/constant.dart';
 import 'package:somass_app/app/shared/dto/client_data_dto.dart';
 import 'package:somass_app/app/shared/dto/enter_dto.dart';
 import 'package:somass_app/app/shared/models/enter_response.dart';
+import 'package:somass_app/app/shared/models/public_event.dart';
 import 'package:somass_app/app/shared/services/local_data.dart';
 
 class ClientService {
@@ -33,16 +36,35 @@ class ClientService {
 
       final token = await localData.getToken();
 
-      await Dio().put("${Constant.SERVER_URL}/client/set/$token", data: clientDataDto.toMap());
+      await Dio().put("${Constant.SERVER_URL}/client/set/$token",
+          data: clientDataDto.toMap());
 
-      if(clientDataDto.fullName != null) {
+      if (clientDataDto.fullName != null) {
         await localData.setFullName(clientDataDto.fullName);
       }
 
-      if(clientDataDto.escorts != null) {
+      if (clientDataDto.escorts != null) {
         await localData.setEscorts(clientDataDto.escorts);
       }
+    } catch (e) {
+      throw e;
+    }
+  }
 
+  static Future<List<PublicEvent>> events() async {
+    try {
+      final localData = LocalData();
+
+      final token = await localData.getToken();
+
+      final response =
+          await Dio().get("${Constant.SERVER_URL}/client/event/$token");
+
+      final responseList = response.data as List<dynamic>;
+
+      return responseList
+          .map<PublicEvent>((data) => PublicEvent.fromJson(data))
+          .toList();
     } catch (e) {
       throw e;
     }

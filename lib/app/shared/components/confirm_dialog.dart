@@ -26,7 +26,7 @@ class ConfirmDialog extends StatelessWidget {
       content: Text(contentText),
       actions: <Widget>[
         FlatButton(
-          child: Text(cancelButtonText),
+          child: Text(cancelButtonText, style: TextStyle(color: Colors.red)),
           onPressed: () {
             Navigator.of(context).pop();
             onCancel();
