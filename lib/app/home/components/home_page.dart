@@ -108,11 +108,13 @@ class _HomePageState extends State<HomePage> {
   void onEventTap(PublicEvent event) {
     final peopleQty = widget.escorts.length + 1;
 
-    if ((peopleQty + event.occupiedVacancies) > event.totalVacancies) {
-      return SnackBar(
-        content: Text(
-            "Não a vagas suficientes para você e seus acompanhantes, tente remover algum acompanhante para proseguir com o agendamento."),
-      ).show(context);
+    if (!event.hasParticipation) {
+      if ((peopleQty + event.occupiedVacancies) > event.totalVacancies) {
+        return SnackBar(
+          content: Text(
+              "Não a vagas suficientes para você e seus acompanhantes, tente remover algum acompanhante para proseguir com o agendamento."),
+        ).show(context);
+      }
     }
 
     final eventDialog = EventDialog(
@@ -138,8 +140,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final hasSubscribed =
-        !widget.events.every((element) => element.hasPassed ? true : !element.hasParticipation);
+    final hasSubscribed = !widget.events.every(
+        (element) => element.hasPassed ? true : !element.hasParticipation);
 
     final groupedEvents =
         groupBy(widget.events, (PublicEvent obj) => obj.location.trim());
@@ -150,7 +152,7 @@ class _HomePageState extends State<HomePage> {
       value.sort((a, b) =>
           a.dayOfWeek.index.toString().compareTo(b.dayOfWeek.index.toString()));
 
-      value.sort((a,b) {
+      value.sort((a, b) {
         return a.date.compareTo(b.date);
       });
 
