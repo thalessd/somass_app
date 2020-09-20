@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:somass_app/app/login/components/login_form.dart';
+import 'package:somass_app/app/shared/components/devdes_info.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({@required this.onSubmit, @required this.title, this.load = false});
@@ -100,41 +101,7 @@ class LoginPage extends StatelessWidget {
                               LoginForm(onSubmit: this.onSubmit, load: this.load),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(6),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: SvgPicture.asset(
-                                  "assets/images/devdes-brand-color.svg",
-                                  height: 25,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 1,
-                                height: 28,
-                                child: Container(
-                                  padding: EdgeInsets.only(right: 2, left: 2),
-                                  color: Colors.grey[400],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  "www.devdes.io | 89 99988 9460\npor: Thales Carvalho",
-                                  style: TextStyle(
-                                      color: Colors.grey[500],
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 11),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
+                      DevdesInfo()
                     ],
                   ),
                 ),

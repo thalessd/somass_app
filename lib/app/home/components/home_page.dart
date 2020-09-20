@@ -4,6 +4,7 @@ import 'package:somass_app/app/home/components/event_dialog.dart';
 import 'package:somass_app/app/home/components/name_edit_dialog.dart';
 import 'package:somass_app/app/home/components/section_title.dart';
 import 'package:somass_app/app/shared/components/confirm_dialog.dart';
+import 'package:somass_app/app/shared/components/devdes_info.dart';
 import 'package:somass_app/app/shared/components/info_dialog.dart';
 import 'package:somass_app/app/shared/components/lazy_load_blurred.dart';
 import 'package:somass_app/app/shared/constants/constant.dart';
@@ -107,12 +108,12 @@ class _HomePageState extends State<HomePage> {
   void onEventTap(PublicEvent event) {
     final peopleQty = widget.escorts.length + 1;
 
-//    if ((peopleQty + event.occupiedVacancies) > event.totalVacancies) {
-//      return SnackBar(
-//        content: Text(
-//            "Não a vagas suficientes para você e seus acompanhantes, tente remover algum acompanhante para proseguir com o agendamento."),
-//      ).show(context);
-//    }
+    if ((peopleQty + event.occupiedVacancies) > event.totalVacancies) {
+      return SnackBar(
+        content: Text(
+            "Não a vagas suficientes para você e seus acompanhantes, tente remover algum acompanhante para proseguir com o agendamento."),
+      ).show(context);
+    }
 
     final eventDialog = EventDialog(
       event: event,
@@ -363,6 +364,7 @@ class _HomePageState extends State<HomePage> {
                           return eventTiles[index];
                         },
                       ),
+                      DevdesInfo()
                     ],
                   ),
                 ),
