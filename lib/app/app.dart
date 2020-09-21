@@ -45,7 +45,7 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: providers,
       child: MaterialApp(
-        title: "SOMASS App",
+        title: "Agenda Missas",
         debugShowCheckedModeBanner: false,
         debugShowMaterialGrid: false,
         builder: (context, child) => Scaffold(

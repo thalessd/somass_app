@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Agendamento de Missas"),
+          title: Text("Agenda Missas"),
           leading: IconButton(
             icon: Icon(Icons.info_outline),
             tooltip: "Informações",
