@@ -75,12 +75,12 @@ class Helper {
   }
 
   static String dayOfWeekToBrlShort(DayOfWeek dayOfWeek) {
-    final days = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex"];
+    final days = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
     return days[dayOfWeek.index];
   }
 
   static String dayOfWeekToBrlLong(DayOfWeek dayOfWeek) {
-    final days = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira"];
+    final days = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
     return days[dayOfWeek.index];
   }
 }
