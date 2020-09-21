@@ -9,6 +9,7 @@ import 'package:somass_app/app/shared/components/info_dialog.dart';
 import 'package:somass_app/app/shared/components/lazy_load_blurred.dart';
 import 'package:somass_app/app/shared/constants/constant.dart';
 import 'package:somass_app/app/shared/constants/style.dart';
+import 'package:somass_app/app/shared/helpers/helper.dart';
 import 'package:somass_app/app/shared/models/day_of_week.dart';
 import 'package:somass_app/app/shared/models/public_event.dart';
 import "package:collection/collection.dart";
@@ -204,7 +205,11 @@ class _HomePageState extends State<HomePage> {
           leading: IconButton(
             icon: Icon(Icons.info_outline),
             tooltip: "Informações",
-            onPressed: widget.load ? null : () {},
+            onPressed: widget.load
+                ? null
+                : () {
+                    Helper.toInfo(context);
+                  },
           ),
           actions: [
             IconButton(
@@ -340,7 +345,7 @@ class _HomePageState extends State<HomePage> {
                             if (this.widget.escorts.length > 0 &&
                                 this.widget.escorts.length <
                                     Constant.ESCORTS_MAX)
-                              Divider(color: Colors.grey[400]),
+                              Divider(),
                             if (this.widget.escorts.length <
                                 Constant.ESCORTS_MAX)
                               ListTile(

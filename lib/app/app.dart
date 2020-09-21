@@ -3,11 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:somass_app/app/home/home_screen.dart';
+import 'package:somass_app/app/home/info_screen.dart';
 import 'package:somass_app/app/home/name_screen.dart';
 import 'package:somass_app/app/login/login_screen.dart';
 import 'package:somass_app/app/shared/providers/app_provider.dart';
 import 'package:somass_app/app/splash/splash_screen.dart';
-import 'package:somass_app/app/successfully_scheduled/successfully_scheduled_screen.dart';
+
+import 'home/successfully_scheduled_screen.dart';
 
 class App extends StatelessWidget {
   @override
@@ -67,6 +69,7 @@ class App extends StatelessWidget {
           "/home": (context) => HomeScreen(),
           "/name": (context) => NameScreen(),
           "/successfully_scheduled": (context) => SuccessfullyScheduledScreen(),
+          "/info": (context) => InfoScreen(),
         },
       ),
     );

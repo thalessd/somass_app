@@ -16,6 +16,10 @@ class Helper {
     Navigator.pushNamed(context, "/successfully_scheduled");
   }
 
+  static void toInfo(BuildContext context) {
+    Navigator.pushNamed(context, "/info");
+  }
+
   static void toNameNoBack(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, "/name", (r) => false);
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:somass_app/app/successfully_scheduled/components/successfully_scheduled_page.dart';
+import 'components/successfully_scheduled_page.dart';
 
 class SuccessfullyScheduledScreen extends StatefulWidget {
   SuccessfullyScheduledScreen({Key key}) : super(key: key);
