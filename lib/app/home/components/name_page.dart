@@ -5,7 +5,6 @@ import 'package:somass_app/app/shared/components/lazy_load_blurred.dart';
 import 'package:somass_app/app/shared/constants/style.dart';
 
 class NamePage extends StatelessWidget {
-
   final Function exitFromApp;
   final Function(String) onSave;
   final bool load;
@@ -16,19 +15,18 @@ class NamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text("Seu Nome"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.exit_to_app),
+          centerTitle: true,
+          title: Text("Seu Nome"),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
             onPressed: exitFromApp,
-          )
-        ],
-      ),
+          )),
       body: LazyLoadBlurred(
         show: load,
-        child: Center(
-          child: SingleChildScrollView(
+        child: Container(
+          color: Theme.of(context).backgroundColor,
+          child: Center(
+              child: SingleChildScrollView(
             reverse: true,
             padding: EdgeInsets.all(Style.APP_MARGIN),
             child: Column(
@@ -46,7 +44,7 @@ class NamePage extends StatelessWidget {
                   height: 80,
                 ),
                 Card(
-                  elevation: 4.0,
+                  elevation: 2.0,
                   child: Padding(
                     padding: EdgeInsets.all(Style.CARD_MARGIN),
                     child: Column(
@@ -55,22 +53,27 @@ class NamePage extends StatelessWidget {
                         Text(
                           'Coloque seu nome no campo a baixo para que possamos lhe identificar.',
                           style: TextStyle(
-                              fontSize: Theme.of(context).textTheme.headline6.fontSize,
+                              fontSize: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  .fontSize,
                               fontFamily: "Cairo",
-                              height: 1.2
-                          ),
+                              height: 1.2),
                         ),
                         SizedBox(
                           height: 20,
                         ),
-                        NameForm(onSave: onSave, load: load,)
+                        NameForm(
+                          onSave: onSave,
+                          load: load,
+                        )
                       ],
                     ),
                   ),
                 )
               ],
             ),
-          )
+          )),
         ),
       ),
     );

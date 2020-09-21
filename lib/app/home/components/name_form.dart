@@ -45,16 +45,19 @@ class _NameFormState extends State<NameForm> {
           ),
           FractionallySizedBox(
             widthFactor: 1,
-            child: RaisedButton(
-                color: Theme.of(context).accentColor,
-                elevation: 1,
-                child: Text("SALVAR NOME E ENTRAR",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 2.0,
-                    )),
-                onPressed: widget.load ? null : onSavePressed),
+            child: RaisedButton.icon(
+              padding: EdgeInsets.only(top: 15, bottom: 15),
+              icon: Icon(Icons.arrow_forward),
+              color: Theme.of(context).accentColor,
+              elevation: 1,
+              label: Text("CONTINUAR",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 2.0,
+                  )),
+              onPressed: widget.load ? null : onSavePressed,
+            ),
           )
         ],
       ),

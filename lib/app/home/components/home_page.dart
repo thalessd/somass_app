@@ -227,6 +227,7 @@ class _HomePageState extends State<HomePage> {
         body: LazyLoadBlurred(
           show: widget.load,
           child: Container(
+            color: Theme.of(context).backgroundColor,
             child: Column(
               children: [
                 if (hasSubscribed)

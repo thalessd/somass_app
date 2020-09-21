@@ -17,7 +17,7 @@ class LoginPage extends StatelessWidget {
       body: SingleChildScrollView(
         reverse: true,
         child: Container(
-          color: Colors.white,
+          color: Theme.of(context).backgroundColor,
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [

@@ -40,32 +40,61 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           FractionallySizedBox(
             widthFactor: .8,
-            child: DefaultTextFormField(
-              labelText: "CPF",
-              icon: Icon(Icons.person),
-              validator: InputValidator.isCPFRequired,
-              keyboardType: TextInputType.number,
-              inputFormatters: [_cpfMaskFormatter],
-              disabled: widget.load,
-              onSaved: (String cpf) {
-                this._cpf = cpf;
-              },
+            child: Column(
+              children: [
+                FractionallySizedBox(
+                  widthFactor: 1,
+                  child: Text("Entre com o seu CPF abaixo:", style: Theme.of(context).textTheme.bodyText1),
+                ),
+                SizedBox(height: 10,),
+                DefaultTextFormField(
+                  labelText: "CPF",
+                  icon: Icon(Icons.person),
+                  validator: InputValidator.isCPFRequired,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [_cpfMaskFormatter],
+                  disabled: widget.load,
+                  onSaved: (String cpf) {
+                    this._cpf = cpf;
+                  },
+                ),
+              ],
             ),
           ),
           Container(
             margin: EdgeInsets.only(top: 20),
             child: FractionallySizedBox(
               widthFactor: .8,
-              child: RaisedButton(
-                color: Theme.of(context).accentColor,
-                elevation: 1,
-                child: Text("ENTRAR",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 2.0,
-                    )),
-                onPressed: widget.load ? null : onLoginPressed,
+              child: Column(
+                children: [
+                  FractionallySizedBox(
+                    widthFactor: 1,
+                    child: RaisedButton.icon(
+                      padding: EdgeInsets.only(top: 15, bottom: 15),
+                      icon: Icon(Icons.arrow_forward),
+                      color: Theme.of(context).accentColor,
+                      elevation: 1,
+                      label: Text("ENTRAR",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 2.0,
+                          )),
+                      onPressed: widget.load ? null : onLoginPressed,
+                    ),
+                  ),
+                  SizedBox(height: 16,),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Icon(Icons.verified_user, color: Colors.grey[300], size: 18,), SizedBox(width: 6,),Text("SEUS DADOS ESTÃO SEGUROS", style: TextStyle(
+                        fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
+                        fontWeight: Theme.of(context).textTheme.bodyText1.fontWeight,
+                        color: Colors.grey[300]
+                      ))],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

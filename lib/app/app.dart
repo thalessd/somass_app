@@ -58,6 +58,7 @@ class App extends StatelessWidget {
             accentColor: Color(accentColor),
             primarySwatch: materialColor,
             visualDensity: VisualDensity.adaptivePlatformDensity,
+            backgroundColor: Colors.grey[100],
             buttonTheme: ButtonThemeData(
               padding: EdgeInsets.only(top: 14, bottom: 14, left: 22, right: 22 ),
             )),
