@@ -260,26 +260,29 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(
                         height: 10,
                       ),
-                      Card(
-                        elevation: 3,
-                        margin: EdgeInsets.all(0),
-                        color: Colors.white,
-                        child: ListTile(
-                            title: Text(widget.fullName),
-                            leading: Icon(
-                              Icons.person,
-                              color: hasSubscribed
-                                  ? Colors.grey
-                                  : Theme.of(context).primaryColor,
-                            ),
-                            trailing: IconButton(
-                              icon: Icon(Icons.edit),
-                              splashRadius: 20,
-                              color: hasSubscribed
-                                  ? Colors.grey
-                                  : Colors.blueAccent,
-                              onPressed: hasSubscribed ? null : onFullNameEdit,
-                            )),
+                      Opacity(
+                        opacity: hasSubscribed ? .4 : 1,
+                        child: Card(
+                          elevation: 3,
+                          margin: EdgeInsets.all(0),
+                          color: Colors.white,
+                          child: ListTile(
+                              title: Text(widget.fullName),
+                              leading: Icon(
+                                Icons.person,
+                                color: hasSubscribed
+                                    ? Colors.grey
+                                    : Theme.of(context).primaryColor,
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(Icons.edit),
+                                splashRadius: 20,
+                                color: hasSubscribed
+                                    ? Colors.grey
+                                    : Colors.blueAccent,
+                                onPressed: hasSubscribed ? null : onFullNameEdit,
+                              )),
+                        ),
                       ),
                       SizedBox(
                         height: 18,
@@ -287,77 +290,80 @@ class _HomePageState extends State<HomePage> {
                       SectionTitle(
                         title: "Acompanhantes",
                         badgeText:
-                            "${widget.escorts.length}/${Constant.ESCORTS_MAX}",
+                            "${widget.escorts.length} de ${Constant.ESCORTS_MAX}",
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                      Card(
-                        elevation: 3,
-                        margin: EdgeInsets.all(0),
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: widget.escorts.length,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                    title: Text(widget.escorts[index]),
+                      Opacity(
+                        opacity: hasSubscribed ? .4 : 1,
+                        child: Card(
+                          elevation: 3,
+                          margin: EdgeInsets.all(0),
+                          color: Colors.white,
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: widget.escorts.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                      title: Text(widget.escorts[index]),
+                                      leading: Icon(
+                                        Icons.person,
+                                        color: hasSubscribed
+                                            ? Colors.grey
+                                            : Theme.of(context).primaryColor,
+                                      ),
+                                      trailing: Wrap(
+                                        spacing: -8,
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: hasSubscribed
+                                                  ? Colors.grey
+                                                  : Colors.redAccent,
+                                            ),
+                                            splashRadius: 20,
+                                            onPressed: hasSubscribed
+                                                ? null
+                                                : () => onEscortDelete(index),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.edit,
+                                              color: hasSubscribed
+                                                  ? Colors.grey
+                                                  : Colors.blueAccent,
+                                            ),
+                                            splashRadius: 20,
+                                            onPressed: hasSubscribed
+                                                ? null
+                                                : () => onEscortUpdate(index),
+                                          )
+                                        ],
+                                      ));
+                                },
+                              ),
+                              if (this.widget.escorts.length > 0 &&
+                                  this.widget.escorts.length <
+                                      Constant.ESCORTS_MAX)
+                                Divider(),
+                              if (this.widget.escorts.length <
+                                  Constant.ESCORTS_MAX)
+                                ListTile(
+                                    title: Text("Adicionar Outra Pessoa"),
+                                    onTap: hasSubscribed ? null : onEscortAdd,
                                     leading: Icon(
-                                      Icons.person,
+                                      Icons.person_add,
                                       color: hasSubscribed
                                           ? Colors.grey
-                                          : Theme.of(context).primaryColor,
-                                    ),
-                                    trailing: Wrap(
-                                      spacing: -8,
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(
-                                            Icons.delete,
-                                            color: hasSubscribed
-                                                ? Colors.grey
-                                                : Colors.redAccent,
-                                          ),
-                                          splashRadius: 20,
-                                          onPressed: hasSubscribed
-                                              ? null
-                                              : () => onEscortDelete(index),
-                                        ),
-                                        IconButton(
-                                          icon: Icon(
-                                            Icons.edit,
-                                            color: hasSubscribed
-                                                ? Colors.grey
-                                                : Colors.blueAccent,
-                                          ),
-                                          splashRadius: 20,
-                                          onPressed: hasSubscribed
-                                              ? null
-                                              : () => onEscortUpdate(index),
-                                        )
-                                      ],
-                                    ));
-                              },
-                            ),
-                            if (this.widget.escorts.length > 0 &&
-                                this.widget.escorts.length <
-                                    Constant.ESCORTS_MAX)
-                              Divider(),
-                            if (this.widget.escorts.length <
-                                Constant.ESCORTS_MAX)
-                              ListTile(
-                                  title: Text("Adicionar Outra Pessoa"),
-                                  onTap: hasSubscribed ? null : onEscortAdd,
-                                  leading: Icon(
-                                    Icons.person_add,
-                                    color: hasSubscribed
-                                        ? Colors.grey
-                                        : Colors.green,
-                                  ))
-                          ],
+                                          : Colors.green,
+                                    ))
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(

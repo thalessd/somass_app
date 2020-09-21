@@ -14,19 +14,18 @@ class LazyLoadBlurred extends StatelessWidget {
     final blurredProgress = Center(
       child: ClipRect(
         child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+            filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
             child: ConstrainedBox(
               constraints: const BoxConstraints.expand(),
               child: Container(
                   decoration: BoxDecoration(
-                      color:
-                          Theme.of(context).primaryColorDark.withOpacity(0.80)),
+                      color: Colors.white.withOpacity(.4)),
                   child: Center(
                       child: Container(
                     width: 75,
                     height: 75,
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).accentColor),
                       strokeWidth: 12,
                     ),
                   ))),
