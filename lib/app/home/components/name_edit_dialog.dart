@@ -47,7 +47,7 @@ class _NameEditDialogState extends State<NameEditDialog> {
             disabled: false,
             initialValue: widget.initialValue,
             icon: Icon(Icons.text_fields),
-            validator: InputValidator.isRequiredMin(10, message: "Seu nome completo"),
+            validator: InputValidator.isRequiredMin(10, message: "Nome Completo"),
             onSaved: (String name) {
               _name = name;
             },

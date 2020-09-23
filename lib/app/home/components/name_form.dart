@@ -35,7 +35,7 @@ class _NameFormState extends State<NameForm> {
             labelText: "Seu Nome Completo",
             disabled: widget.load,
             icon: Icon(Icons.text_fields),
-            validator: InputValidator.isRequiredMin(10),
+            validator: InputValidator.isRequiredMin(10, message: "Seu Nome Completo"),
             onSaved: (String fullName) {
               _fullName = fullName;
             },
